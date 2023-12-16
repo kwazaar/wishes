@@ -7,32 +7,68 @@
 
 import Foundation
 import Alamofire
+import SwiftUI
+import UserNotifications
 
 
 class WishesViewModel : ObservableObject {
-    
-    @Published var valueWish: String = ""
+
+    @Published var wishes: [Wish] = []
+    @Published var wish: String = ""
     @Published var date: Int = 0
+    @Published var isOnSwitchNotification = false
     
-    func fetchWishes () {
-
-        guard let url = URL(string: "https://hqhzpodbhmedtadbwsvn.supabase.co/rest/v1/wishes?select=*") else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        let headers: HTTPHeaders = ["apikey" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxaHpwb2RiaG1lZHRhZGJ3c3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIwNjI3MzcsImV4cCI6MjAxNzYzODczN30.Nwnnxx2xgO_yuLhwG-Ld2yIUhwIfi01hmS4m3hUD0Yg", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxaHpwb2RiaG1lZHRhZGJ3c3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIwNjI3MzcsImV4cCI6MjAxNzYzODczN30.Nwnnxx2xgO_yuLhwG-Ld2yIUhwIfi01hmS4m3hUD0Yg"]
+    init() {
+        getLocalWish()
+    }
+    
+    func getWishes() {
         
-        AF.request(url, method: .get, headers: headers)
-            .validate()
-            .responseDecodable(of: [Wish].self) { response in
-                switch response.result {
-                case .success(let decodedWishes):
-                    DispatchQueue.main.async {
-                        self.valueWish = decodedWishes[Int.random(in: 0...10)].value
-                    }
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
+        NetworkService.shared.fetchWishes { result in
+            switch result {
+            case .success(let fetchWishes):
+                self.wishes = fetchWishes
+                self.wish = fetchWishes.first!.value
+                print(self.wish)
+            case .failure(let failure):
+                print(failure.localizedDescription)
             }
+        }
+    }
+    
+    func getLocalWish() {
+        if let url = Bundle.main.url(forResource: "Wishes", withExtension: "json") {
+            
+            let data = try! Data(contentsOf: url)
+            guard let wishesDecode = try? JSONDecoder().decode([Wish].self, from: data) else { return }
+            if wishesDecode.count > 0 {
+                let wish = wishesDecode.first!.value
+                self.wish = wish
+            } else {
+               print("Нет данных")
+            }
+            
+            
+        }
+    }
+    
+    func scheduleNotification(title: String, body: String, time: Date) {
+        if isOnSwitchNotification {
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.sound = UNNotificationSound.default
+            
+            let component = Calendar.current.dateComponents([.hour, .minute], from: time)
+            let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: true)
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request)
+            
+        } else {
+            
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            print("Уведомления выключены")
+        }
     }
 }
