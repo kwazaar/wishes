@@ -24,8 +24,8 @@ struct WishesView: View {
             DatePicker("Выберете время получения пожелания", selection: $timeToPushNotifications, displayedComponents: .hourAndMinute)
 
             Button("Сохранить") {
-                    viewModel.scheduleNotification(title: "Вам пожелание!", body: viewModel.wish, time: timeToPushNotifications)
-                }
+                    viewModel.setNotification(time: timeToPushNotifications)
+            }
             .padding(10)
             .background(.cyan)
             .foregroundColor(.white)

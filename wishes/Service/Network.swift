@@ -16,7 +16,7 @@ class NetworkService {
     
     let headers: HTTPHeaders = ["apikey" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxaHpwb2RiaG1lZHRhZGJ3c3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIwNjI3MzcsImV4cCI6MjAxNzYzODczN30.Nwnnxx2xgO_yuLhwG-Ld2yIUhwIfi01hmS4m3hUD0Yg", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxaHpwb2RiaG1lZHRhZGJ3c3ZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDIwNjI3MzcsImV4cCI6MjAxNzYzODczN30.Nwnnxx2xgO_yuLhwG-Ld2yIUhwIfi01hmS4m3hUD0Yg"]
     
-    func fetchWishes(complition: @escaping (Result<[Wish], Error>) -> ()) {
+    func fetchWishes(completion: @escaping (Result<[Wish], Error>) -> ()) {
 
         guard let url = URL(string: "https://hqhzpodbhmedtadbwsvn.supabase.co/rest/v1/wishes?select=*") else { return }
         var request = URLRequest(url: url)
@@ -27,9 +27,9 @@ class NetworkService {
             .responseDecodable(of: [Wish].self) { response in
                 switch response.result {
                 case .success(let decodedWishes):
-                    complition(.success(decodedWishes))
+                    completion(.success(decodedWishes))
                 case .failure(let error):
-                    complition(.failure(error))
+                    completion(.failure(error))
                 }
             }
     }

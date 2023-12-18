@@ -44,30 +44,34 @@ class WishesViewModel : ObservableObject {
             if wishesDecode.count > 0 {
                 let wish = wishesDecode.first!.value
                 self.wish = wish
+                self.wishes = wishesDecode
             } else {
                print("Нет данных")
             }
-            
-            
         }
     }
     
-    func scheduleNotification(title: String, body: String, time: Date) {
+    func setNotification(time: Date) {
         if isOnSwitchNotification {
-            let content = UNMutableNotificationContent()
-            content.title = title
-            content.body = body
-            content.sound = UNNotificationSound.default
-            
-            let component = Calendar.current.dateComponents([.hour, .minute], from: time)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: true)
-            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request)
+            for dayNumber in 0..<wishes.count {
+                let content = UNMutableNotificationContent()
+                content.title = NotificationTitle.title[dayNumber]
+                content.body = wishes[dayNumber].value
+                content.sound = UNNotificationSound.default
+                let timeNotification = time.addingTimeInterval(Double(dayNumber * 86400))
+                print(timeNotification)
+                
+                let component = Calendar.current.dateComponents([.day, .hour, .minute], from: timeNotification)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: component, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                
+                UNUserNotificationCenter.current().add(request)
+            }
             
         } else {
             
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
             print("Уведомления выключены")
         }
     }

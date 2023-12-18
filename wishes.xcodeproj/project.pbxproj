@@ -15,6 +15,7 @@
 		ED04BFBE2B274BAB000DB2DB /* WishesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED04BFBD2B274BAB000DB2DB /* WishesViewModel.swift */; };
 		ED04BFC12B274D9A000DB2DB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = ED04BFC02B274D9A000DB2DB /* Alamofire */; };
 		ED1BAC5F2B2DDAD70008E41F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1BAC5E2B2DDAD70008E41F /* AppDelegate.swift */; };
+		EDCDAC862B3075FB003AACFD /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCDAC852B3075FB003AACFD /* Notification.swift */; };
 		EDF83F1E2B2B46FD00D05013 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDF83F1D2B2B46FD00D05013 /* Network.swift */; };
 		EDF83F272B2CC60200D05013 /* Wishes.json in Resources */ = {isa = PBXBuildFile; fileRef = EDF83F262B2CC60200D05013 /* Wishes.json */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 		ED04BFBB2B274A56000DB2DB /* Wish.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wish.swift; sourceTree = "<group>"; };
 		ED04BFBD2B274BAB000DB2DB /* WishesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishesViewModel.swift; sourceTree = "<group>"; };
 		ED1BAC5E2B2DDAD70008E41F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EDCDAC852B3075FB003AACFD /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		EDF83F1D2B2B46FD00D05013 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		EDF83F262B2CC60200D05013 /* Wishes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Wishes.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +88,7 @@
 		EDF097C52B29D990009600FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				EDCDAC852B3075FB003AACFD /* Notification.swift */,
 				ED04BFBB2B274A56000DB2DB /* Wish.swift */,
 				EDF83F262B2CC60200D05013 /* Wishes.json */,
 			);
@@ -196,6 +199,7 @@
 				ED1BAC5F2B2DDAD70008E41F /* AppDelegate.swift in Sources */,
 				EDF83F1E2B2B46FD00D05013 /* Network.swift in Sources */,
 				ED04BFBC2B274A56000DB2DB /* Wish.swift in Sources */,
+				EDCDAC862B3075FB003AACFD /* Notification.swift in Sources */,
 				ED04BFB02B2747BB000DB2DB /* WishesView.swift in Sources */,
 				ED04BFAE2B2747BB000DB2DB /* WishesApp.swift in Sources */,
 				ED04BFBE2B274BAB000DB2DB /* WishesViewModel.swift in Sources */,
