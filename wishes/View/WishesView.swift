@@ -10,28 +10,40 @@ import SwiftUI
 struct WishesView: View {
     
     @ObservedObject var viewModel = WishesViewModel()
-    @State var isShowButton = false
-    @State var timeToPushNotifications = Date()
+    @State var isShowSettings = false
     var body: some View {
         
-        VStack {
-            Text(viewModel.wish)
-                .font(.title)
-            Spacer()
-            Text("Настройки")
-                .font(.headline)
-            Toggle("Включить уведомления", isOn: $viewModel.isOnSwitchNotification)
-            DatePicker("Выберете время получения пожелания", selection: $timeToPushNotifications, displayedComponents: .hourAndMinute)
-
-            Button("Сохранить") {
-                    viewModel.setNotification(time: timeToPushNotifications)
+        NavigationStack {
+            VStack {
+                Menu {
+                    Button {
+                        isShowSettings = true
+                    } label: {
+                        Label("Настройки", systemImage: "wrench.and.screwdriver")
+                    }
+                    Button {
+                        print("Тест")
+                    } label: {
+                        Label("О приложении", systemImage: "book")
+                    }
+                } label: {
+                    Label("", systemImage: "ellipsis.circle")
+                        .foregroundColor(.black)
+                        .font(.title)
+                }
+                .frame(width: UIScreen.main.bounds.width , alignment: .trailing)
+                Spacer()
+                Text(viewModel.wish)
+                    .font(.title)
+                Spacer()
             }
-            .padding(10)
-            .background(.cyan)
-            .foregroundColor(.white)
-            .cornerRadius(10)
+            .navigationDestination(isPresented: $isShowSettings) {
+                SettingsView()
+            }
+            .padding()
         }
-        .padding()
+        
+        
     }
 }
 

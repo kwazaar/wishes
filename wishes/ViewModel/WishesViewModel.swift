@@ -15,7 +15,6 @@ class WishesViewModel : ObservableObject {
 
     @Published var wishes: [Wish] = []
     @Published var wish: String = ""
-    @Published var date: Int = 0
     @Published var isOnSwitchNotification = false
     
     init() {
