@@ -10,24 +10,31 @@ import SwiftUI
 struct SettingsView: View {
     
     @ObservedObject var viewModel = WishesViewModel()
-    @State var timeToPushNotifications = Date()
     
     var body: some View {
         
         VStack {
-            Toggle("Включить уведомления", isOn: $viewModel.isOnSwitchNotification)
-            DatePicker("Выберете время получения пожелания", selection: $timeToPushNotifications, displayedComponents: .hourAndMinute)
-
-            Button("Сохранить") {
-                viewModel.setNotification(time: timeToPushNotifications)
+            List{
+                Toggle("Включить уведомления", isOn: $viewModel.isOnSwitchNotification)
+                    .onChange(of: viewModel.isOnSwitchNotification) { newValue in
+                        if newValue {
+                            viewModel.setNotification()
+                        } else {
+                            viewModel.setNotification()
+                        }
+                    }
+                if viewModel.isOnSwitchNotification {
+                    DatePicker("Время уведомления", selection: Binding<Date>(get: {
+                        viewModel.selectDate
+                    }, set: { newValue in
+                        viewModel.timeToPushNotifications = newValue.timeIntervalSince1970
+                        viewModel.isOnSwitchNotification = false
+                        
+                    }) , displayedComponents: .hourAndMinute)
+                }
+                
             }
-            .padding(10)
-            .background(.cyan)
-            .foregroundColor(.white)
-            .cornerRadius(10)
         }
-        .frame(width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.height - 100, alignment: .topLeading)
-        .padding()
     }
 }
 

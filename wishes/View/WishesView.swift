@@ -36,6 +36,13 @@ struct WishesView: View {
                 Text(viewModel.wish)
                     .font(.title)
                 Spacer()
+                Button("Test button") {
+                    viewModel.testFunc()
+                }
+                .padding()
+                .background(.gray)
+                .cornerRadius(20)
+                .foregroundColor(.white)
             }
             .navigationDestination(isPresented: $isShowSettings) {
                 SettingsView()
