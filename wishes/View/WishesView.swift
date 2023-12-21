@@ -11,6 +11,7 @@ struct WishesView: View {
     
     @ObservedObject var viewModel = WishesViewModel()
     @State var isShowSettings = false
+    
     var body: some View {
         
         NavigationStack {
@@ -36,21 +37,21 @@ struct WishesView: View {
                 Text(viewModel.wish)
                     .font(.title)
                 Spacer()
-                Button("Test button") {
-                    viewModel.testFunc()
-                }
-                .padding()
-                .background(.gray)
-                .cornerRadius(20)
-                .foregroundColor(.white)
+//                Button("Test button") {
+//                    viewModel.testFunc()
+//                }
+//                .padding()
+//                .background(.gray)
+//                .cornerRadius(20)
+//                .foregroundColor(.white)
             }
             .navigationDestination(isPresented: $isShowSettings) {
                 SettingsView()
+                    .navigationTitle("Настройки")
+                    .navigationBarBackButtonHidden()
             }
             .padding()
         }
-        
-        
     }
 }
 

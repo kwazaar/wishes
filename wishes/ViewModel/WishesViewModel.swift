@@ -68,7 +68,12 @@ class WishesViewModel : ObservableObject {
     }
     
     func setNotification() {
+        
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        print("Уведомления удалены")
         if isOnSwitchNotification {
+            
             for dayNumber in 0..<wishes.count {
                 let content = UNMutableNotificationContent()
                 
@@ -85,11 +90,6 @@ class WishesViewModel : ObservableObject {
                 UNUserNotificationCenter.current().add(request)
             }
             
-        } else {
-            
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
-            print("Уведомления выключены")
         }
     }
     func testFunc() {

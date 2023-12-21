@@ -9,32 +9,57 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel = WishesViewModel()
+    @State var editSettings = true
     
     var body: some View {
         
-        VStack {
-            List{
+        NavigationView {
+            List {
                 Toggle("Включить уведомления", isOn: $viewModel.isOnSwitchNotification)
-                    .onChange(of: viewModel.isOnSwitchNotification) { newValue in
-                        if newValue {
-                            viewModel.setNotification()
-                        } else {
-                            viewModel.setNotification()
-                        }
+                    .onChange(of: viewModel.isOnSwitchNotification) { _ in
+                            editSettings = false
                     }
-                if viewModel.isOnSwitchNotification {
+                
                     DatePicker("Время уведомления", selection: Binding<Date>(get: {
                         viewModel.selectDate
                     }, set: { newValue in
-                        viewModel.timeToPushNotifications = newValue.timeIntervalSince1970
-                        viewModel.isOnSwitchNotification = false
+                        if viewModel.timeToPushNotifications != newValue.timeIntervalSince1970 {
+                            editSettings = false
+                            viewModel.selectDate = newValue
+                            viewModel.timeToPushNotifications = newValue.timeIntervalSince1970
+                        }
+                        
+                        
                         
                     }) , displayedComponents: .hourAndMinute)
-                }
+                    .disabled(!viewModel.isOnSwitchNotification)
+                
                 
             }
-        }
+        } .navigationBarItems(trailing:
+                                Button("Сохранить", action: {
+            if !editSettings {
+                viewModel.setNotification()
+            }
+            editSettings = true
+        })  .disabled(editSettings)
+            .bold()
+            .foregroundColor(editSettings ? .gray : .black))
+        .navigationBarItems(leading:
+                            Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }, label: {
+            Image(systemName: "chevron.left")
+            Text("Пожелания")
+        })
+                                .foregroundColor(.black)
+                                .bold()
+        )
+        
+        
+        
     }
 }
 
