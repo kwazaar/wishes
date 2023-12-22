@@ -11,6 +11,7 @@ struct WishesView: View {
     
     @ObservedObject var viewModel = WishesViewModel()
     @State var isShowSettings = false
+    @State var isShowAlert = false
     
     var body: some View {
         
@@ -23,7 +24,7 @@ struct WishesView: View {
                         Label("Настройки", systemImage: "wrench.and.screwdriver")
                     }
                     Button {
-                        print("Тест")
+                        isShowAlert = true
                     } label: {
                         Label("О приложении", systemImage: "book")
                     }
@@ -32,10 +33,11 @@ struct WishesView: View {
                         .foregroundColor(.black)
                         .font(.title)
                 }
-                .frame(width: UIScreen.main.bounds.width , alignment: .trailing)
+                .frame(width: UIScreen.main.bounds.width - 20, alignment: .trailing)
                 Spacer()
                 Text(viewModel.wish)
                     .font(.title)
+                    .multilineTextAlignment(.center)
                 Spacer()
 //                Button("Test button") {
 //                    viewModel.testFunc()
@@ -45,6 +47,9 @@ struct WishesView: View {
 //                .cornerRadius(20)
 //                .foregroundColor(.white)
             }
+            .alert("Версия v1.0", isPresented: $isShowAlert, actions: {
+                Button("Ок", role: .cancel) { }
+            })
             .navigationDestination(isPresented: $isShowSettings) {
                 SettingsView()
                     .navigationTitle("Настройки")

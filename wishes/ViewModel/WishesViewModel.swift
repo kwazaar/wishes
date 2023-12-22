@@ -24,10 +24,13 @@ class WishesViewModel : ObservableObject {
     @AppStorage("timeToPushNotification") var timeToPushNotifications: TimeInterval = Date().timeIntervalSince1970
     
     init() {
+        calculateNumberDay()
         getLocalWish()
         setSettings()
+
         if firstOpenApp == 0 {
             UserDefaults.standard.set(Date().timeIntervalSince1970, forKey: "firstOpenDate")
+            setNotification()
             
             firstOpenApp = 1
             UserDefaults.standard.set(firstOpenApp, forKey: "firstOpenApp")
@@ -98,9 +101,13 @@ class WishesViewModel : ObservableObject {
     
     func calculateNumberDay() {
         let date = Date().timeIntervalSince1970
-        let firstOpenDate = UserDefaults.standard.double(forKey: "firstOpenDate")
+        var firstOpenDate = UserDefaults.standard.double(forKey: "firstOpenDate")
+        let numDay = Int((date - firstOpenDate) / secondsInDay)
+        if  numDay > wishes.count {
+            UserDefaults.standard.set(date, forKey: "firstDate")
+            firstOpenDate = UserDefaults.standard.double(forKey: "firstOpenDate")
+        }
         numberDay = Int((date - firstOpenDate) / secondsInDay)
-        print(numberDay)
         
         
     }
